@@ -21,7 +21,7 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   private val HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA"
   private val BARCODE_DATA_ACTION   = "com.ehsy.warehouse.action.BARCODE_DATA"
   private val IDATA_SCAN_ACTION    = "android.intent.action.SCANRESULT"
-  private val ZEBRA_SCAN_ACTION    = "com.symbol.datawedge.data_string"
+  private val ZEBRA_SCAN_ACTION    = "com.symbol.datawedge.action.DATA_STRING"
   private val CHANNEL_NAME = "com.fuse.scanner/methods"
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -80,12 +80,12 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
         }else if(action==ZEBRA_SCAN_ACTION){
           data = intent.getStringExtra("com.symbol.datawedge.data_string").toString();
         }
-        val extras = intent.extras
-        if (extras != null) {
-            for (key in extras.keySet()) {
-                Log.i("Allen", "Extra key: $key, value: ${extras.get(key)}")
-            }
-        }
+        // val extras = intent.extras
+        // if (extras != null) {
+        //     for (key in extras.keySet()) {
+        //        Log.i("Allen", "Extra key: $key, value: ${extras.get(key)}")
+        //     }
+        // }
         // 将扫描结果数据发送给 Flutter 侧进行处理
         Log.i("Allen","onScanResult: $data")
         channel.invokeMethod("onScanResult", data)
