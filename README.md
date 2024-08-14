@@ -1,9 +1,9 @@
 # fuse_scanner
 
-# HONEYWELL(霍尼韦尔)--com.honeywell.decode.intent.action.EDIT_DATA
-# HONEYWELL(霍尼韦尔)--com.ehsy.warehouse.action.BARCODE_DATA
-# IDATA--android.intent.action.SCANRESULT
-# ZEBRA(斑马)--com.symbol.datawedge.data_string
+## HONEYWELL(霍尼韦尔)--com.honeywell.decode.intent.action.EDIT_DATA
+## HONEYWELL(霍尼韦尔)--com.ehsy.warehouse.action.BARCODE_DATA
+## IDATA--android.intent.action.SCANRESULT
+## ZEBRA(斑马)--com.symbol.datawedge.action.DATA_STRING
 
 
 ## Getting Started
