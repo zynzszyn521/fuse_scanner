@@ -46,10 +46,23 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun initScanner() {
-    Log.i("Allen", "Initializing scanner...")
-    val initIntent = Intent(INVENGO_SCAN_INIT)
-    context.sendBroadcast(initIntent)
-    Log.i("Allen", "Scanner initialization broadcast sent")
+    Log.i("Allen", "Initializing scanner...") 
+    val initIntent = Intent(INVENGO_SCAN_INIT) 
+    // 尝试启动Se4710Service
+    val serviceIntent = Intent()
+    serviceIntent.setClassName("com.ssn.se4710", "com.ssn.se4710.Se4710Service")
+    try {
+      context.startService(serviceIntent)
+      Log.i("Allen", "Started Se4710Service")
+    } catch (e: Exception) {
+      Log.e("Allen", "Error starting Se4710Service: ${e.message}")
+    }
+    
+    // 延迟发送初始化广播，确保服务已启动
+    handler.postDelayed({
+      context.sendBroadcast(initIntent)
+      Log.i("Allen", "Scanner initialization broadcast sent")
+    }, 500)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
