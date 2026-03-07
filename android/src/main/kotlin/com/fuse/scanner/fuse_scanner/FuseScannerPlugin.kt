@@ -23,7 +23,8 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   private val IDATA_SCAN_ACTION    = "android.intent.action.SCANRESULT"
   private val ZEBRA_SCAN_ACTION    = "com.symbol.datawedge.action.DATA_STRING"
 
-  private val INVENGO_SCAN_ACTION    = "com.rfid.SCAN"
+   private val INVENGO_SCAN_INIT = "com.rfid.SCAN_INIT" // 初始化扫描 
+  private val INVENGO_SCAN_ACTION    = "com.rfid.SCAN"  // 扫描结果
   private val INVENGO_SCAN_CMD = "com.rfid.SCAN_CMD" // 触发扫描
   private val INVENGO_STOP_SCAN = "com.rfid.STOP_SCAN" // 停止扫描
 
@@ -39,6 +40,16 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
     registerReceiver(context)
+
+    // 初始化扫描服务
+    initScanner()
+  }
+
+  private fun initScanner() {
+    Log.i("Allen", "Initializing scanner...")
+    val initIntent = Intent(INVENGO_SCAN_INIT)
+    context.sendBroadcast(initIntent)
+    Log.i("Allen", "Scanner initialization broadcast sent")
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
