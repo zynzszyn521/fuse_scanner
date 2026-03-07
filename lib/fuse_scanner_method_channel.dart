@@ -35,7 +35,6 @@ class MethodChannelFuseScanner extends FuseScannerPlatform {
   Future<void> stopScan() async {
     try {
       await methodChannel.invokeMethod<void>('stopScan');
-      _scanResultSubscription?.cancel();
     } on PlatformException catch (e) {
       if (kDebugMode) {
         print("Failed to stop scan: ${e.message}");
