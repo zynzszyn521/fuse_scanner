@@ -23,6 +23,7 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   private val IDATA_SCAN_ACTION    = "android.intent.action.SCANRESULT"
   private val INVENGO_SCAN_ACTION    = "com.rfid.SCAN"
   private val ZEBRA_SCAN_ACTION    = "com.symbol.datawedge.action.DATA_STRING"
+  private val SUNMI_SCAN_ACTION    = "com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED"
   private val CHANNEL_NAME = "com.fuse.scanner/methods"
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -67,6 +68,10 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
     val zebraIntentFilter   = IntentFilter()
     zebraIntentFilter.addAction(ZEBRA_SCAN_ACTION)
     context.registerReceiver(myBroadcastReceiver, zebraIntentFilter)
+
+    val sunmiIntentFilter   = IntentFilter()
+    sunmiIntentFilter.addAction(SUNMI_SCAN_ACTION)
+    context.registerReceiver(myBroadcastReceiver, sunmiIntentFilter)
   }
 
   private fun unregisterReceiver(context: Context) {
@@ -78,7 +83,7 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
       val action = intent.action
       var data="";
       if(action != null){
-        if (action==HONEYWELL_SCAN_ACTION||action==BARCODE_DATA_ACTION) {
+        if (action==HONEYWELL_SCAN_ACTION) {
           data = intent.getStringExtra("data").toString();
         }else if(action==IDATA_SCAN_ACTION){
           data = intent.getStringExtra("value").toString();
@@ -86,6 +91,10 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
           data = intent.getStringExtra("com.symbol.datawedge.data_string").toString();
         }else if(action==INVENGO_SCAN_ACTION){
           data = intent.getStringExtra("scannerdata").toString();
+        }else if(action==SUNMI_SCAN_ACTION){
+          data = intent.getStringExtra("data").toString();
+        }else if(action==BARCODE_DATA_ACTION){
+          data = intent.getStringExtra("data").toString();
         }
         // val extras = intent.extras
         // if (extras != null) {
