@@ -60,6 +60,10 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
     iDataIntentFilter.addAction(IDATA_SCAN_ACTION)
     context.registerReceiver(myBroadcastReceiver, iDataIntentFilter)
 
+     val inengoIntentFilter   = IntentFilter()
+    inengoIntentFilter.addAction(INVENGO_SCAN_ACTION)
+    context.registerReceiver(myBroadcastReceiver, inengoIntentFilter)
+
     val zebraIntentFilter   = IntentFilter()
     zebraIntentFilter.addAction(ZEBRA_SCAN_ACTION)
     context.registerReceiver(myBroadcastReceiver, zebraIntentFilter)
