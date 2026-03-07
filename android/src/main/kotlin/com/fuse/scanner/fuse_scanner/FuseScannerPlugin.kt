@@ -40,9 +40,6 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
     registerReceiver(context)
-
-    // 初始化扫描服务
-    initScanner()
   }
 
   private fun initScanner() {
@@ -53,6 +50,8 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    // 初始化扫描服务
+    initScanner()
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
     }else if (call.method == "startScan") {
