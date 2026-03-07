@@ -45,6 +45,7 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
     }else if (call.method == "startScan") {
+      Log.i("Allen","Begin startScan...")
       // 发送Sunmi开始扫描的广播
       val sunmiIntent = Intent(SUNMI_START_SCAN_ACTION)
       context.sendBroadcast(sunmiIntent)
@@ -54,7 +55,9 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
       context.sendBroadcast(invengoIntent)
       
       result.success("已发送开始扫描指令")
+      Log.i("Allen","End startScan...")
     } else if (call.method == "stopScan") {
+      Log.i("Allen","Begin stopScan...")
       // 发送Sunmi停止扫描的广播
       val sunmiIntent = Intent(SUNMI_STOP_SCAN_ACTION)
       context.sendBroadcast(sunmiIntent)
@@ -64,6 +67,7 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
       context.sendBroadcast(invengoIntent)
       
       result.success("已发送停止扫描指令")
+      Log.i("Allen","End stopScan...")
     } else {
       result.notImplemented()
     }
