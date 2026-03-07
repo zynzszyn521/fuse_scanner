@@ -21,6 +21,7 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   private val HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA"
   private val BARCODE_DATA_ACTION   = "com.ehsy.warehouse.action.BARCODE_DATA"
   private val IDATA_SCAN_ACTION    = "android.intent.action.SCANRESULT"
+  private val INVENGO_SCAN_ACTION    = "com.rfid.SCAN"
   private val ZEBRA_SCAN_ACTION    = "com.symbol.datawedge.action.DATA_STRING"
   private val CHANNEL_NAME = "com.fuse.scanner/methods"
 
@@ -79,6 +80,8 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
           data = intent.getStringExtra("value").toString();
         }else if(action==ZEBRA_SCAN_ACTION){
           data = intent.getStringExtra("com.symbol.datawedge.data_string").toString();
+        }else if(action==INVENGO_SCAN_ACTION){
+          data = intent.getStringExtra("scannerdata").toString();
         }
         // val extras = intent.extras
         // if (extras != null) {
