@@ -21,23 +21,49 @@ class FuseScannerPlugin: FlutterPlugin, MethodCallHandler {
   private val HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA"
   private val BARCODE_DATA_ACTION   = "com.ehsy.warehouse.action.BARCODE_DATA"
   private val IDATA_SCAN_ACTION    = "android.intent.action.SCANRESULT"
-  private val INVENGO_SCAN_ACTION    = "com.rfid.SCAN"
   private val ZEBRA_SCAN_ACTION    = "com.symbol.datawedge.action.DATA_STRING"
+
+  private val INVENGO_SCAN_ACTION    = "com.rfid.SCAN"
+  private val INVENGO_SCAN_CMD = "com.rfid.SCAN_CMD" // 触发扫描
+  private val INVENGO_STOP_SCAN = "com.rfid.STOP_SCAN" // 停止扫描
+
   private val SUNMI_SCAN_ACTION    = "com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED"
+  private val SUNMI_START_SCAN_ACTION = "com.sunmi.scanner.ACTION_TRIGGER"  // 触发扫描
+  private val SUNMI_STOP_SCAN_ACTION = "com.sunmi.scanner.ACTION_CANCEL" // 停止扫描
+  
   private val CHANNEL_NAME = "com.fuse.scanner/methods"
+  private lateinit var context: Context
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME)
     channel.setMethodCallHandler(this)
-    registerReceiver(flutterPluginBinding.applicationContext)
+    context = flutterPluginBinding.applicationContext
+    registerReceiver(context)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
     }else if (call.method == "startScan") {
-      //手動執行掃碼，需要調用掃碼槍接口
-      result.success("手動執行掃碼,需要調用第三方方法")
+      // 发送Sunmi开始扫描的广播
+      val sunmiIntent = Intent(SUNMI_START_SCAN_ACTION)
+      context.sendBroadcast(sunmiIntent)
+      
+      // 发送Invengo开始扫描的广播
+      val invengoIntent = Intent(INVENGO_SCAN_CMD)
+      context.sendBroadcast(invengoIntent)
+      
+      result.success("已发送开始扫描指令")
+    } else if (call.method == "stopScan") {
+      // 发送Sunmi停止扫描的广播
+      val sunmiIntent = Intent(SUNMI_STOP_SCAN_ACTION)
+      context.sendBroadcast(sunmiIntent)
+      
+      // 发送Invengo停止扫描的广播
+      val invengoIntent = Intent(INVENGO_STOP_SCAN)
+      context.sendBroadcast(invengoIntent)
+      
+      result.success("已发送停止扫描指令")
     } else {
       result.notImplemented()
     }
